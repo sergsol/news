@@ -8,7 +8,7 @@ BBC_FEED = "http://feeds.bbci.co.uk/news/rss.xml"
 
 @app.route('/')
 def get_news():
-    return "OK"
+    return render_template('index.html')
 
 
 if __name__=="__main__":
