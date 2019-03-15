@@ -7,8 +7,12 @@
 <body>
     <h1>Headlines</h1>
     <h2>Current weather</h2>
-    <p>City: <b>{{weather['name']}}</b></p>
-    <p>{{weather['weather'][0]['description']}} | {{weather['main']['temp']}}&#8451;</p>
+    <form method="POST">
+        <input type="text" name="city" placeholder="weather search">
+        <input type="submit"  value="Submit">
+    </form>
+    <p>City: <b>{{weather['name']}},{{weather['sys']['country']}}</b></p>
+    <p>{{weather['weather'][0]['description'].capitalize()}} | {{weather['main']['temp']}}&#8451;</p>
     <form action="/" method="POST">
     <input type="text" name="publication" placeholder="search" />
     <input type="submit" value="Submit">
