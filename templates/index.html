@@ -11,8 +11,23 @@
         <input type="text" name="city" placeholder="weather search">
         <input type="submit"  value="Submit">
     </form>
-    <p>City: <b>{{weather['name']}},{{weather['sys']['country']}}</b></p>
-    <p>{{weather['weather'][0]['description'].capitalize()}} | {{weather['main']['temp']}}&#8451;</p>
+    <p>City: <b>{{weather['city']}},{{weather['country']}}</b></p>
+    <p>{{weather['description'].capitalize()}} | {{weather['temperature']}}&#8451;</p>
+    <h2>Currency</h2>
+        <form method="POST">
+        From : <select name="currency_from">
+                {% for curen in currensies%}
+                    <option value="{{curen}}" {% if curen==currency_from%}selected{%endif%}>{{curen}}</option>
+                {%  endfor %}
+                </select>
+        To: <select name="currency_to">
+                {% for curen in currensies%}
+                    <option value="{{curen}}" {% if curen==currency_to%}selected{%endif%}>{{curen}}</option>
+                {%  endfor %}
+                </select>
+            <input type="submit"  value="Convert">
+        </form>
+    <h2> 1{{currency_from}} = {{currency_to}} {{ rates }}</h2>
     <form action="/" method="POST">
     <input type="text" name="publication" placeholder="search" />
     <input type="submit" value="Submit">

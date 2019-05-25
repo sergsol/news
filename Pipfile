@@ -8,6 +8,7 @@ flask = "*"
 feedparser = "*"
 gunicorn = "*"
 requests = "*"
+pipfile = "*"
 
 [dev-packages]
 
