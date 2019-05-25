@@ -10,9 +10,10 @@ import urllib.parse
 
 app = Flask(__name__)
 
-RSS_FEEDS = {'bbc': 'http://RSS_FEEDS.bbci.co.uk/news/rss.xml',
+
+RSS_FEEDS = {'bbc': 'http://feeds.bbci.co.uk/news/world/rss.xml',
              'cnn': 'http://rss.cnn.com/rss/edition.rss',
-             'fox': 'http://RSS_FEEDS.foxnews.com/foxnews/latest',
+             'fox': 'http://feeds.foxnews.com/foxnews/latest',
              'iol': 'http://www.iol.co.za/cmlink/1.640'}
 
 RATES = 'https://openexchangerates.org/api/latest.json?app_id=24ea695da8fc45148ea0d8d6ec60ec8f'
@@ -29,8 +30,7 @@ def home():
     city = request.form.get('city')
     if not publication:
         publication = DEFAULTS['publication']
-    articles = get_news(publication)
-    city = request.form.get('city')
+    articles, company = get_news(publication)
     if not city:
         city = DEFAULTS['city']
     weather = get_weather(city)
@@ -42,16 +42,23 @@ def home():
         currency_to = DEFAULTS['currency_to']
     rete, currencies = get_rates(currency_from, currency_to)
     return render_template("index.html", articles=articles, weather=weather, rates=rete,
-                           currency_from=currency_from, currency_to=currency_to, currensies=currencies)
+                           currency_from=currency_from, currency_to=currency_to, currensies=currencies, feeds=RSS_FEEDS,
+                           company=company)
 
+
+# def get_news(query):
+#     if not query or query.lower() not in RSS_FEEDS:
+#         publication = DEFAULTS['publication']
+#     else:
+#         publication = query.lower()
+#     publication = feedparser.parse(RSS_FEEDS[publication])
+#     return publication['entries']
 
 def get_news(query):
-    if not query or query.lower() not in RSS_FEEDS:
-        publication = DEFAULTS['publication']
-    else:
-        publication = query.lower()
+
+    publication = query.lower()
     publication = feedparser.parse(RSS_FEEDS[publication])
-    return publication['entries']
+    return publication['entries'], query.lower()
 
 
 def get_weather(city):

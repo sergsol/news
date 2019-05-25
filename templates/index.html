@@ -28,9 +28,17 @@
             <input type="submit"  value="Convert">
         </form>
     <h2> 1{{currency_from}} = {{currency_to}} {{ rates }}</h2>
+    <!--<form action="/" method="POST">-->
+    <!--<input type="text" name="publication" placeholder="search" />-->
+    <!--<input type="submit" value="Submit">-->
+    <!--</form>-->
     <form action="/" method="POST">
-    <input type="text" name="publication" placeholder="search" />
-    <input type="submit" value="Submit">
+        From : <select name="publication">
+                {% for feed in feeds.keys()%}
+                    <option value="{{feed.upper()}}" {% if feed==company%}selected{%endif%}>{{feed.upper()}}</option>
+                {%  endfor %}
+                </select>
+        <input type="submit" value="Submit">
     </form>
     {% for article in articles %}
         <h1><a href="{{ article.link }}" >{{ article.title }}</a></h1>
