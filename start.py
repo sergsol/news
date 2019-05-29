@@ -3,9 +3,8 @@ from flask import render_template
 from flask import request
 import feedparser
 import requests
-import json
-import urllib.request
-import urllib.parse
+import datetime
+from flask import make_response
 
 
 app = Flask(__name__)
@@ -41,9 +40,19 @@ def home():
     if not currency_to:
         currency_to = DEFAULTS['currency_to']
     rete, currencies = get_rates(currency_from, currency_to)
-    return render_template("index.html", articles=articles, weather=weather, rates=rete,
+    # return render_template("index.html", articles=articles, weather=weather, rates=rete,
+    #                        currency_from=currency_from, currency_to=currency_to, currensies=currencies, feeds=RSS_FEEDS,
+    #                        company=company)
+    response = make_response(render_template("index.html", articles=articles, weather=weather, rates=rete,
                            currency_from=currency_from, currency_to=currency_to, currensies=currencies, feeds=RSS_FEEDS,
-                           company=company)
+                           company=company))
+    expires = datetime.datetime.now() + datetime.timedelta(days=365)
+    response.set_cookie("currency_from", currency_from, expires=expires)
+    response.set_cookie("currency_to", currency_to, expires=expires)
+    response.set_cookie("city", city, expires=expires)
+    response.set_cookie("company", company, expires=expires)
+
+    return response
 
 
 # def get_news(query):
