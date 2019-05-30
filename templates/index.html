@@ -3,16 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>News</title>
+    <style>
+        html {
+         font-family: "Helvetica";
+         background: white;}
+        body {
+         background: lightgrey;
+         max-width: 900px;
+         margin: 0 auto;
+        }
+        #header {
+         background: lightsteelblue;
+        }
+        #inner-header {
+         padding-left: 10;
+        }
+        #main{
+         padding-left: 10;
+        }
+        input[type="text"], select {
+         color: grey;
+         border: 1px solid lightsteelblue;
+         height: 30px;
+         line-height:15px;
+         margin: 2px 6px 16px 0px;
+        }
+        input[type="submit"] {
+         padding: 5px 10px 5px 10px;
+         color: black;
+         background: lightsteelblue;
+         border: none;
+         box-shadow: 1px 1px 1px #4C6E91;
+        }
+        input[type="submit"]:hover{
+         background: steelblue;
+        }
+    </style>
 </head>
 <body>
-    <h1>Headlines news</h1>
+    <div id="header">
+        <div id="inner-header">
+            <h1>Headlines</h1>
+            <p>Headlines. Currency. Weather</p>
+        </div>
+         <hr />
+    </div>
+    <div id="main">
     <h2>Current weather</h2>
     <form method="POST">
         <input type="text" name="city" placeholder="weather search">
         <input type="submit"  value="Submit">
     </form>
+    {% if weather %}
     <p>City: <b>{{weather['city']}},{{weather['country']}}</b></p>
     <p>{{weather['description'].capitalize()}} | {{weather['temperature']}}&#8451;</p>
+    {%endif%}
+    {% if weather == None %}
+    <p> No such city </p>
+    {% endif %}
     <h2>Currency</h2>
         <form method="POST">
         From : <select name="currency_from">
@@ -28,10 +76,7 @@
             <input type="submit"  value="Convert">
         </form>
     <h2> 1{{currency_from}} = {{currency_to}} {{ rates }}</h2>
-    <!--<form action="/" method="POST">-->
-    <!--<input type="text" name="publication" placeholder="search" />-->
-    <!--<input type="submit" value="Submit">-->
-    <!--</form>-->
+    <h2>News</h2>
     <form action="/" method="POST">
         From : <select name="publication">
                 {% for feed in feeds.keys()%}
@@ -46,5 +91,6 @@
         <h3>{{ article.summary }}</h3>
         <hr />
     {% endfor %}
+    </div>
 </body>
 </html>
